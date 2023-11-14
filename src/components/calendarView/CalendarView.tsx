@@ -6,17 +6,20 @@ import { SlotInfo } from "react-big-calendar";
 
 const CalendarView = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [modalType, setModalType] = useState<"create" | "update">("create");
   const [slotInfo, setSlotInfo] = useState<SlotInfo | undefined>();
   const [selectedEvent, setSelectedEvent] = useState<CustomEvent | undefined>();
 
   const onCreateEvent = (slot: SlotInfo) => {
     setIsVisible(true);
     setSlotInfo(slot);
+    setModalType("create");
   };
 
   const onUpdateEvent = (customEvent: CustomEvent) => {
     setIsVisible(true);
     setSelectedEvent(customEvent);
+    setModalType("update");
   };
 
   const onCloseModal = () => {
@@ -28,6 +31,7 @@ const CalendarView = () => {
   return (
     <div>
       <EventModal
+        type={modalType}
         visible={isVisible}
         onCancel={() => onCloseModal()}
         slotInfo={slotInfo}

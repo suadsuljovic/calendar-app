@@ -5,11 +5,13 @@ import { SlotInfo } from "react-big-calendar";
 import { CustomEvent } from "../eventContext/EventContextProvider";
 import dayjs, { Dayjs } from "dayjs";
 import { useEventsContext } from "../../hooks";
+import { v4 as uuidv4 } from "uuid";
 
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
 interface EventModalProps {
+  type: "create" | "update";
   visible: boolean;
   slotInfo?: SlotInfo;
   selectedEvent?: CustomEvent;
@@ -24,7 +26,10 @@ interface FormData {
 }
 
 const EventModal = (props: EventModalProps) => {
-  const { visible, slotInfo, selectedEvent, onCancel } = props;
+  const { type, visible, slotInfo, selectedEvent, onCancel } = props;
+  const { addEvent, updateEvent, removeEvent } = useEventsContext();
+
+  const isCreate = type === "create";
 
   const [form] = Form.useForm<FormData>();
   const format = "YYYY-MM-DD HH:mm";
@@ -39,7 +44,27 @@ const EventModal = (props: EventModalProps) => {
       .validateFields()
       .then((values) => {
         console.log("Received values:", values);
-        // Handle your form values here
+
+        if (isCreate) {
+          addEvent({
+            id: uuidv4(),
+            start: values.dateRange?.[0].toDate(),
+            end: values.dateRange?.[1].toDate(),
+            desc: values.description,
+            title: values.title,
+          });
+        }
+
+        if (!isCreate && selectedEvent) {
+          updateEvent({
+            id: selectedEvent.id,
+            start: values.dateRange?.[0].toDate(),
+            end: values.dateRange?.[1].toDate(),
+            desc: values.description,
+            title: values.title,
+          });
+        }
+
         onModalClose();
       })
       .catch((errorInfo) => {
@@ -67,12 +92,10 @@ const EventModal = (props: EventModalProps) => {
   return (
     <Modal
       open={visible}
-      title={
-        selectedEvent ? "Update your event info" : "Fill in your event info"
-      }
+      title={isCreate ? "Update your event info" : "Fill in your event info"}
       onCancel={onModalClose}
       onOk={handleOk}
-      okText={selectedEvent ? "Update" : "Create"}
+      okText={isCreate ? "Create" : "Update"}
     >
       <Form form={form} name="event_form">
         <Form.Item<FormData>

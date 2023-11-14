@@ -8,11 +8,17 @@ export interface CustomEvent extends Event {
 
 interface EventContextProps {
   events: CustomEvent[];
+  updateEvent: (event: CustomEvent) => void;
+  removeEvent: (eventId: string) => void;
+  addEvent: (event: CustomEvent) => void;
   setEvents: React.Dispatch<React.SetStateAction<CustomEvent[]>>;
 }
 
 export const EventContext = createContext<EventContextProps>({
   events: [],
+  addEvent: () => {},
+  updateEvent: () => {},
+  removeEvent: () => {},
   setEvents: () => {},
 });
 
@@ -27,8 +33,31 @@ const EventsContextProvider = ({ children }: PropsWithChildren) => {
     },
   ]);
 
+  const addEvent = (event: CustomEvent) => {
+    setEvents([...events, event]);
+  };
+
+  const removeEvent = (eventId: string) => {
+    const newEvents = events.filter((event) => !(event.id === eventId));
+    setEvents(newEvents);
+  };
+
+  const updateEvent = (event: CustomEvent) => {
+    const newEvents = events.map((e) => {
+      if (e.id === event.id) {
+        return event;
+      }
+
+      return e;
+    });
+
+    setEvents(newEvents);
+  };
+
   return (
-    <EventContext.Provider value={{ events, setEvents }}>
+    <EventContext.Provider
+      value={{ events, addEvent, removeEvent, updateEvent, setEvents }}
+    >
       {children}
     </EventContext.Provider>
   );
