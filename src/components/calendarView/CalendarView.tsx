@@ -1,4 +1,10 @@
+import CustomCalendar from "./Calendar";
+
 const CalendarView = () => {
-  return <div>calendar</div>;
+  return (
+    <div>
+      <CustomCalendar />
+    </div>
+  );
 };
 export default CalendarView;
