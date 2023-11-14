@@ -1,13 +1,13 @@
-type EventListItemProps = {
-  id: string;
-  name: string;
-};
+import { PropsWithChildren } from "react";
+import { Event } from "react-big-calendar";
+
+type EventListItemProps = PropsWithChildren<Event>;
+
 const EventListItem = (props: EventListItemProps) => {
-  const { id, name } = props;
+  const { title } = props;
   return (
     <div>
-      <p>{id}</p>
-      <p>{name}</p>
+      <p>{title}</p>
     </div>
   );
 };

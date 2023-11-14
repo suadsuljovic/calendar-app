@@ -6,7 +6,7 @@ const EventList = () => {
   return (
     <div>
       {events.map((event) => (
-        <EventListItem id={event.id} name={event.name} />
+        <EventListItem title={event.title} />
       ))}
     </div>
   );

@@ -1,8 +1,7 @@
 import { Layout, Menu, MenuProps } from "antd";
 import { ViewType } from "../../types";
-import { useState } from "react";
 
-import styles from "./navbar.module.css";
+// import styles from "./navbar.module.css";
 
 const { Sider } = Layout;
 
@@ -13,11 +12,9 @@ type NavbarProps = {
 const Navbar = (props: NavbarProps) => {
   const { onItemChange } = props;
 
-  const [collapsed, setCollapsed] = useState(false);
-
   const menuItems: MenuProps["items"] = [
     { key: "list", label: "List" },
-    { key: "calendar", label: "calendar" },
+    { key: "calendar", label: "Calendar" },
   ];
 
   return (

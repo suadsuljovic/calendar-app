@@ -1,5 +1,5 @@
 import { PropsWithChildren, createContext, useState } from "react";
-import { Event } from "../../types";
+import { Event } from "react-big-calendar";
 
 interface EventContextProps {
   events: Event[];
