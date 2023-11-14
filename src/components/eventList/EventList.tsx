@@ -1,5 +1,5 @@
-import { useEventsContext } from "../eventContext/EventContext";
 import EventListItem from "./EventListItem";
+import { useEventsContext } from "../../hooks";
 
 const EventList = () => {
   const { events } = useEventsContext();

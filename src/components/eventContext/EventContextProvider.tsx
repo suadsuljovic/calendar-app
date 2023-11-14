@@ -1,4 +1,4 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useState } from "react";
 import { Event } from "../../types";
 
 interface EventContextProps {
@@ -6,7 +6,7 @@ interface EventContextProps {
   setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
 }
 
-const EventContext = createContext<EventContextProps>({
+export const EventContext = createContext<EventContextProps>({
   events: [],
   setEvents: () => {},
 });
@@ -19,16 +19,6 @@ const EventsContextProvider = ({ children }: PropsWithChildren) => {
       {children}
     </EventContext.Provider>
   );
-};
-
-export const useEventsContext = () => {
-  const context = useContext(EventContext);
-
-  if (!context) {
-    throw new Error("useMyContext must be used within a MyContextProvider");
-  }
-
-  return context;
 };
 
 export default EventsContextProvider;
