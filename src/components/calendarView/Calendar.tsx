@@ -20,7 +20,6 @@ const CustomCalendar = (props: CustomCalendarProps) => {
   const defaultDate = useMemo(() => new Date(), []);
   const views = useMemo(() => ({ day: true, month: true, week: true }), []);
 
-  console.log(events);
   return (
     <div>
       <Calendar
@@ -31,7 +30,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ minHeight: 500 }}
+        style={{ height: 500 }}
         onSelectEvent={(customEvent) => {
           if (onUpdateEvent) onUpdateEvent(customEvent);
         }}

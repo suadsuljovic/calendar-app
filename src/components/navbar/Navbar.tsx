@@ -1,7 +1,7 @@
 import { Layout, Menu, MenuProps } from "antd";
 import { ViewType } from "../../types";
 
-// import styles from "./navbar.module.css";
+import styles from "./navbar.module.css";
 
 const { Sider } = Layout;
 
@@ -18,14 +18,19 @@ const Navbar = (props: NavbarProps) => {
   ];
 
   return (
-    <Sider breakpoint="lg" collapsedWidth={0} width={200}>
+    <Sider
+      breakpoint="lg"
+      collapsedWidth={0}
+      width={200}
+      className={styles.sider}
+    >
       <Menu
         mode="vertical"
         defaultSelectedKeys={["list"]}
         onSelect={(item) => {
           onItemChange(item.key as ViewType);
         }}
-        style={{ height: "100%", borderRight: 0 }}
+        className={styles.menu}
         items={menuItems}
       />
     </Sider>

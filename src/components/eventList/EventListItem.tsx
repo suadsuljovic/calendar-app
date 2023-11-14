@@ -17,6 +17,7 @@ const EventListItem = (props: EventListItemProps) => {
       onClick={() => {
         if (onUpdateEvent) onUpdateEvent(event);
       }}
+      style={{ marginBottom: 10 }}
     >
       {event.desc}
     </Card>

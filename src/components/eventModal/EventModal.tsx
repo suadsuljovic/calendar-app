@@ -43,8 +43,6 @@ const EventModal = (props: EventModalProps) => {
     form
       .validateFields()
       .then((values) => {
-        console.log("Received values:", values);
-
         if (isCreate) {
           addEvent({
             id: uuidv4(),
