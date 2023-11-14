@@ -1,5 +1,6 @@
 import { PropsWithChildren, createContext, useState } from "react";
 import { Event } from "react-big-calendar";
+import { setEventsToLocalStorage } from "../../utils";
 
 export interface CustomEvent extends Event {
   id: string;
@@ -23,23 +24,17 @@ export const EventContext = createContext<EventContextProps>({
 });
 
 const EventsContextProvider = ({ children }: PropsWithChildren) => {
-  const [events, setEvents] = useState<CustomEvent[]>([
-    {
-      id: "1",
-      title: "Meeting",
-      start: new Date(2023, 10, 11, 10, 30, 0, 0),
-      end: new Date(2023, 10, 11, 12, 30, 0, 0),
-      desc: "Pre-meeting meeting, to prepare for the meeting",
-    },
-  ]);
+  const [events, setEvents] = useState<CustomEvent[]>([]);
 
   const addEvent = (event: CustomEvent) => {
     setEvents([...events, event]);
+    setEventsToLocalStorage([...events, event]);
   };
 
   const removeEvent = (eventId: string) => {
     const newEvents = events.filter((event) => !(event.id === eventId));
     setEvents(newEvents);
+    setEventsToLocalStorage(newEvents);
   };
 
   const updateEvent = (event: CustomEvent) => {
@@ -52,6 +47,7 @@ const EventsContextProvider = ({ children }: PropsWithChildren) => {
     });
 
     setEvents(newEvents);
+    setEventsToLocalStorage(newEvents);
   };
 
   return (

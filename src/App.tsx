@@ -7,11 +7,14 @@ import { Layout } from "antd";
 import { ViewType } from "./types";
 
 import styles from "./app.module.css";
+import { useEventLocalStorage } from "./hooks";
 
 const { Content } = Layout;
 
 const App = () => {
   const [viewType, setViewType] = useState<ViewType>("list");
+
+  useEventLocalStorage();
 
   return (
     <Layout className={styles.layout}>

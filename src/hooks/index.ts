@@ -1,8 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   CustomEvent,
   EventContext,
 } from "../components/eventContext/EventContextProvider";
+import { getEventsFromLocalStorage } from "../utils";
 
 export const useEventsContext = () => {
   const context = useContext(EventContext);
@@ -47,4 +48,17 @@ export const useEventModalActions = () => {
     onCloseModal,
     onUpdateEvent,
   };
+};
+
+export const useEventLocalStorage = () => {
+  const { events, setEvents } = useEventsContext();
+  const localEvents = getEventsFromLocalStorage();
+  const [firstLoad, setFirstLoad] = useState(true);
+
+  useEffect(() => {
+    if (events.length !== localEvents.length && firstLoad) {
+      setEvents(localEvents);
+      setFirstLoad(false);
+    }
+  }, []);
 };
