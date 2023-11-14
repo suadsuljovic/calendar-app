@@ -1,14 +1,25 @@
-import { PropsWithChildren } from "react";
-import { Event } from "react-big-calendar";
+import { Card } from "antd";
 
-type EventListItemProps = PropsWithChildren<Event>;
+import { CustomEvent } from "../eventContext/EventContextProvider";
+
+type EventListItemProps = {
+  event: CustomEvent;
+  onUpdateEvent?: (customEvent: CustomEvent) => void;
+};
 
 const EventListItem = (props: EventListItemProps) => {
-  const { title } = props;
+  const { event, onUpdateEvent } = props;
   return (
-    <div>
-      <p>{title}</p>
-    </div>
+    <Card
+      type="inner"
+      title={event.title}
+      hoverable
+      onClick={() => {
+        if (onUpdateEvent) onUpdateEvent(event);
+      }}
+    >
+      {event.desc}
+    </Card>
   );
 };
 
