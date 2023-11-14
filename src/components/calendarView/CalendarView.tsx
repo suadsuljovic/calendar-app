@@ -1,32 +1,18 @@
-import { useState } from "react";
 import EventModal from "../eventModal/EventModal";
 import CustomCalendar from "./Calendar";
-import { CustomEvent } from "../eventContext/EventContextProvider";
-import { SlotInfo } from "react-big-calendar";
+
+import { useEventModalActions } from "../../hooks";
 
 const CalendarView = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [modalType, setModalType] = useState<"create" | "update">("create");
-  const [slotInfo, setSlotInfo] = useState<SlotInfo | undefined>();
-  const [selectedEvent, setSelectedEvent] = useState<CustomEvent | undefined>();
-
-  const onCreateEvent = (slot: SlotInfo) => {
-    setIsVisible(true);
-    setSlotInfo(slot);
-    setModalType("create");
-  };
-
-  const onUpdateEvent = (customEvent: CustomEvent) => {
-    setIsVisible(true);
-    setSelectedEvent(customEvent);
-    setModalType("update");
-  };
-
-  const onCloseModal = () => {
-    setIsVisible(false);
-    setSlotInfo(undefined);
-    setSelectedEvent(undefined);
-  };
+  const {
+    isVisible,
+    modalType,
+    start,
+    selectedEvent,
+    onCreateEvent,
+    onUpdateEvent,
+    onCloseModal,
+  } = useEventModalActions();
 
   return (
     <div>
@@ -34,7 +20,7 @@ const CalendarView = () => {
         type={modalType}
         visible={isVisible}
         onCancel={() => onCloseModal()}
-        slotInfo={slotInfo}
+        start={start}
         selectedEvent={selectedEvent}
       />
       <CustomCalendar

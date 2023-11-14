@@ -1,4 +1,4 @@
-import { Calendar, SlotInfo, luxonLocalizer } from "react-big-calendar";
+import { Calendar, luxonLocalizer } from "react-big-calendar";
 import { useEventsContext } from "../../hooks";
 import { DateTime } from "luxon";
 
@@ -9,7 +9,7 @@ import { CustomEvent } from "../eventContext/EventContextProvider";
 const localizer = luxonLocalizer(DateTime, { firstDayOfWeek: 1 });
 
 interface CustomCalendarProps {
-  onCreateEvent?: (s: SlotInfo) => void;
+  onCreateEvent?: (start: Date) => void;
   onUpdateEvent?: (event: CustomEvent) => void;
 }
 
@@ -36,7 +36,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
           if (onUpdateEvent) onUpdateEvent(customEvent);
         }}
         onSelectSlot={(s) => {
-          if (onCreateEvent) onCreateEvent(s);
+          if (onCreateEvent) onCreateEvent(s.start);
         }}
       />
     </div>

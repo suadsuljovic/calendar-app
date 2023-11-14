@@ -1,5 +1,8 @@
-import { useContext } from "react";
-import { EventContext } from "../components/eventContext/EventContextProvider";
+import { useContext, useState } from "react";
+import {
+  CustomEvent,
+  EventContext,
+} from "../components/eventContext/EventContextProvider";
 
 export const useEventsContext = () => {
   const context = useContext(EventContext);
@@ -9,4 +12,39 @@ export const useEventsContext = () => {
   }
 
   return context;
+};
+
+export const useEventModalActions = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [modalType, setModalType] = useState<"create" | "update">("create");
+  const [start, setStart] = useState<Date | undefined>();
+  const [selectedEvent, setSelectedEvent] = useState<CustomEvent | undefined>();
+
+  const onCreateEvent = (start: Date) => {
+    setIsVisible(true);
+    setStart(start);
+    setModalType("create");
+  };
+
+  const onUpdateEvent = (customEvent: CustomEvent) => {
+    setIsVisible(true);
+    setSelectedEvent(customEvent);
+    setModalType("update");
+  };
+
+  const onCloseModal = () => {
+    setIsVisible(false);
+    setStart(undefined);
+    setSelectedEvent(undefined);
+  };
+
+  return {
+    isVisible,
+    modalType,
+    start,
+    selectedEvent,
+    onCreateEvent,
+    onCloseModal,
+    onUpdateEvent,
+  };
 };

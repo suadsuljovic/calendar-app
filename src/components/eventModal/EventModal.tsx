@@ -1,7 +1,7 @@
-import { Modal, DatePicker, Input, Checkbox, Form } from "antd";
+import { Modal, DatePicker, Input, Checkbox, Form, Button } from "antd";
 
 import { useEffect } from "react";
-import { SlotInfo } from "react-big-calendar";
+
 import { CustomEvent } from "../eventContext/EventContextProvider";
 import dayjs, { Dayjs } from "dayjs";
 import { useEventsContext } from "../../hooks";
@@ -13,7 +13,7 @@ const { RangePicker } = DatePicker;
 interface EventModalProps {
   type: "create" | "update";
   visible: boolean;
-  slotInfo?: SlotInfo;
+  start?: Date;
   selectedEvent?: CustomEvent;
   onCancel: () => void;
 }
@@ -26,7 +26,7 @@ interface FormData {
 }
 
 const EventModal = (props: EventModalProps) => {
-  const { type, visible, slotInfo, selectedEvent, onCancel } = props;
+  const { type, visible, start, selectedEvent, onCancel } = props;
   const { addEvent, updateEvent, removeEvent } = useEventsContext();
 
   const isCreate = type === "create";
@@ -72,11 +72,16 @@ const EventModal = (props: EventModalProps) => {
       });
   };
 
+  const handleRemove = () => {
+    removeEvent(selectedEvent!.id);
+    onModalClose();
+  };
+
   useEffect(() => {
-    if (slotInfo) {
-      form.setFieldValue("dateRange", [dayjs(slotInfo.start), undefined]);
+    if (start) {
+      form.setFieldValue("dateRange", [dayjs(start), undefined]);
     }
-  }, [slotInfo]);
+  }, [start]);
 
   useEffect(() => {
     if (selectedEvent) {
@@ -95,7 +100,19 @@ const EventModal = (props: EventModalProps) => {
       title={isCreate ? "Update your event info" : "Fill in your event info"}
       onCancel={onModalClose}
       onOk={handleOk}
-      okText={isCreate ? "Create" : "Update"}
+      footer={[
+        <Button key="cancel" onClick={onModalClose}>
+          Cancel
+        </Button>,
+        !isCreate && (
+          <Button key="custom" danger type="primary" onClick={handleRemove}>
+            Remove
+          </Button>
+        ),
+        <Button key="ok" type="primary" onClick={handleOk}>
+          {isCreate ? "Create" : "Update"}
+        </Button>,
+      ]}
     >
       <Form form={form} name="event_form">
         <Form.Item<FormData>
